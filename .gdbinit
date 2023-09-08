@@ -2380,3 +2380,54 @@ python Dashboard.start()
 # Local Variables:
 # mode: python
 # End:
+
+#################################################################################
+## personal config
+
+# 窗口布局
+define dbcfg
+dashboard -layout !assembly breakpoints !expressions !history !memory !registers source stack !threads variables
+end
+
+# 退出并保留断点
+define qbp
+save breakpoints ./.gdb_bp
+quit
+end
+
+# 保留历史工作断点
+define sbp
+save breakpoints ./.gdb_bp
+end
+
+# 加载历史工作断点
+define lbp
+source ./.gdb_bp
+end
+
+define theme
+python
+from pygments.styles import *
+for style in get_all_styles():
+    command = 'dashboard -style syntax_highlighting {!r}'.format(style)
+    gdb.execute(command)
+    print(command)
+    if input('Use this style? (y/N) ') == 'y':
+        break
+end
+end
+
+# 查看各个功能的帮助 help cmd subcmd subsubcmd ...
+# help dashboard source -style highlight-line
+
+# 设置窗口布局
+dbcfg
+
+# 设置展示源码行数
+dashboard source -style height 20
+
+# 设置 GDB 参数
+# set args -S test.c -o test.asm
+
+
+################################################################################
